@@ -2,7 +2,7 @@
 $location = Get-ChildItem C:\Users\$env:UserName\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
 
 # Save the content of 'settings.json' as a powershell object
-$settings = Get-Content $location | ConvertFrom-Json
+$settings = Get-Content -Raw $location | ConvertFrom-Json
 
 # print out current settings with coloring
 Write-Host "This is your current color scheme: " -nonewline
@@ -28,4 +28,14 @@ Write-Host
 
 # ask user to choose an option
 [byte]$choice = Read-Host 'Please choose one from the above list [example: 1]'
-Write-Host $choice.GetType()
+
+# update the current colorScheme value
+$settings.profiles.defaults.colorScheme = $schemeList[$choice-1]
+
+Write-Host "Updated to: $($settings.profiles.defaults.colorScheme)"
+
+# save changed settings into settings.json
+$settings | ConvertTo-Json -Depth 100 | Set-Content -Path $location
+
+Write-Host
+Write-Host
