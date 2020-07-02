@@ -4,5 +4,6 @@ $location = Get-ChildItem C:\Users\$env:UserName\AppData\Local\Packages\Microsof
 # Save the content of 'settings.json' as a powershell object
 $settings = Get-Content $location | ConvertFrom-Json
 
-#print out current settings
-Write-Output "This is your current color scheme: $($settings.profiles.defaults.colorScheme)"
+#print out current settings with coloring
+Write-Host "This is your current color scheme: " -nonewline
+Write-Host $settings.profiles.defaults.colorScheme -foreground red
