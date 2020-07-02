@@ -4,6 +4,28 @@ $location = Get-ChildItem C:\Users\$env:UserName\AppData\Local\Packages\Microsof
 # Save the content of 'settings.json' as a powershell object
 $settings = Get-Content $location | ConvertFrom-Json
 
-#print out current settings with coloring
+# print out current settings with coloring
 Write-Host "This is your current color scheme: " -nonewline
 Write-Host $settings.profiles.defaults.colorScheme -foreground red
+Write-Host
+
+# get all avaliable settings and print them out
+$schemeList = [System.Collections.ArrayList]::new()
+foreach ($scheme in $settings.schemes) {
+  # cast to void to ignore the return value from the Add method 
+  [void]$schemeList.Add($scheme.name)
+}
+
+# print out all avaliable options
+Write-Host "These are your avaliable options:"
+Write-Host
+$i = 0
+foreach ($item in $schemeList) {
+  $i++
+  Write-Host "$i. $item"
+}
+Write-Host
+
+# ask user to choose an option
+[byte]$choice = Read-Host 'Please choose one from the above list [example: 1]'
+Write-Host $choice.GetType()
